@@ -1,0 +1,36 @@
+name: Operator E2E Test for s390x
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  operator-e2e:
+    runs-on: s390x
+
+    strategy:
+      matrix:
+        runtimeclass: ["kata-qemu"]
+
+    steps:
+      - name: Adjust a permission for repo
+        run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+      - uses: actions/checkout@v4
+      - name: Take a pre-action for self-hosted runner
+        run: ${HOME}/script/pre_action.sh cc-operator-pr
+      - name: Install deps
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ansible python-is-python3
+      - name: Run e2e tests
+        run: |
+          cd tests/e2e
+          export PATH="$PATH:/usr/local/bin"
+          ./run-local.sh -r ${{ matrix.runtimeclass }}
+        env:
+          REGISTRY_CREDENTIAL_ENCODED: ${{ secrets.REGISTRY_CREDENTIAL_ENCODED }}
+      - name: Take a post-action
+        if: always()
+        run: ${HOME}/script/post_action.sh cc-operator-pr
