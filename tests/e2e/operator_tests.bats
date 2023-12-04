@@ -43,15 +43,8 @@ systemctl is-active "$container_runtime"
 
 teardown() {
 	# For debugging sake.
-	echo "::group::Get all pods"
 	kubectl get pods -A || true
-        echo "::endgroup::"
-
-        echo "::group::Get all DaemonSets of $ns namespace"
-	kubectl -n "$ns" get ds || true
-        echo "::endgroup::"
-
-	echo "::group::Describe all pods of $ns namespace"
-	kubectl -n "$ns" describe pods || true
+	echo "::group::Describe all pods of confidential-containers namespace"
+	kubectl -n confidential-containers describe pods || true
 	echo "::endgroup::"
 }
