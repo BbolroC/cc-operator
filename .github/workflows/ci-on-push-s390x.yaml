@@ -1,17 +1,22 @@
 name: Operator E2E Test On-Push for s390x
 on:
-  pull_request_target:
+  push:
     branches:
-      - 'main'
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - labeled
+      - 'before-finalize'
     paths-ignore:
       - 'docs/**'
+#  pull_request_target:
+#    branches:
+#      - 'main'
+#    types:
+#      - opened
+#      - synchronize
+#      - reopened
+#      - labeled
+#    paths-ignore:
+#      - 'docs/**'
 
 jobs:
   operator-e2e-on-push:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
+    #if: ${{ contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
     uses: ./.github/workflows/ci-s390x.yaml
