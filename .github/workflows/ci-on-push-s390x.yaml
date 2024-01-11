@@ -19,4 +19,4 @@ on:
 jobs:
   operator-e2e-on-push:
     #if: ${{ contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
-    uses: ./.github/workflows/ci-s390x.yaml
+    uses: ./.github/workflows/ccruntime_e2e.yaml
