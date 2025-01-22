@@ -1,18 +1,20 @@
 name: ccruntime e2e test for PR
 on:
-  pull_request_target:
+  push:
     branches:
-      - 'main'
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - labeled
+      - 'hchoi-install-debug'
+  #pull_request_target:
+  #  branches:
+  #    - 'main'
+  #  types:
+  #    - opened
+  #    - synchronize
+  #    - reopened
+  #    - labeled
 
 jobs:
   e2e-pr:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
     uses: ./.github/workflows/ccruntime_e2e.yaml
     with:
-      target-branch: ${{ github.event.pull_request.base.ref }}
-      commit-hash: ${{ github.event.pull_request.head.sha }}
+      target-branch: main
+      commit-hash: ${{ github.sha }}
